@@ -1,4 +1,7 @@
 import ccxt
+import os
+import argparse
+from dotenv import load_dotenv
 from dhooks import Webhook, Embed
 from datetime import datetime
 import time
@@ -7,12 +10,15 @@ import sys
 url = "https://quotation-api-cdn.dunamu.com/v1/forex/recent?codes=FRX.KRWUSD"
 
 
+# 환경 변수 로드
+load_dotenv()
+
 # 바이낸스와 업비트 API 인증 정보
-binance_api_key = '바이낸스 API KEY'
-binance_api_secret = '바이낸스 API SECRET'
-upbit_api_key = '업비트 API KEY'
-upbit_api_secret = '업비트 API SECRET'
-DISCORD_WEBHOOK_URL = 'https://discordapp.com/api/webhooks/1228332705138081934/197Nr0o1MQmbVrq5ndp14mesgsIRgMcnMqIBsAkx9g0-rG_lqcbqLaVL-rS6F_bmutOk'
+binance_api_key = os.getenv("BINANCE_API_KEY")
+binance_api_secret = os.getenv("BINANCE_SECRET_KEY")
+upbit_api_key = os.getenv("UPBIT_ACCESS_KEY")
+upbit_api_secret = os.getenv("UPBIT_SECRET_KEY")
+DISCORD_WEBHOOK_URL = 'https://discord.com/api/webhooks/1227411289937023098/x9hVRLsLUl1n53l5qPvkCuqqufrLlgF1bElWzoeBoAo4fJ4nFknmytE5LojwPEjLkt1P'
 
 # 거래소 객체 생성
 binance = ccxt.binance({'apiKey': binance_api_key, 'secret': binance_api_secret})
@@ -20,9 +26,9 @@ upbit = ccxt.upbit({'apiKey': upbit_api_key, 'secret': upbit_api_secret})
 hook = Webhook(DISCORD_WEBHOOK_URL.replace("discordapp", "discord"))
 
 
-default_coin_symbol = 'EOS'
-default_amount_to_buy = 10 # 거래수량
-default_sell_yn = 'Y'
+default_coin_symbol = 'USDT'
+default_amount_to_buy = 5 # 거래수량
+default_sell_yn = 'N'
 
 # 매도할 코인과 수량 입력 받기
 if len(sys.argv) == 1:
@@ -41,8 +47,8 @@ else:
 
 
 # 업비트로 송금할 주소 및 태그
-binance_address = '바이낸스 주소'
-binance_tag = '바이낸스 주소2'
+binance_address = 'eosbndeposit'
+binance_tag = '102263705'
 
 def get_withdraw_info():
     return upbit.fetch2(path="/withdraws/coin_addresses", api="private", method="GET")

@@ -66,3 +66,13 @@ while True:
 
     if profit_percentage >= target_profit:
         balance = get_balance(base_asset)
+
+        if balance > 0:
+            print(f"💰 보유량: {balance} {base_asset} → 50% 매도 실행")
+            sell_half(symbol, balance)
+            break  # 매도 후 종료
+        else:
+            print("❌ 보유 코인이 없습니다.")
+
+    time.sleep(10)  # 10초마다 가격 확인
+

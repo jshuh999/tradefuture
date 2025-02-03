@@ -22,8 +22,8 @@ def get_markets():
     """업비트에서 지원하는 모든 마켓 목록 조회 (최신 데이터)"""
     try:
         markets = exchange.load_markets(reload=True)  # 최신 데이터 불러오기
-        market_list = list(markets.keys())
-
+        market_list = list(markets.keys())  
+        
         # 전체 마켓 목록 출력
         #print(f"📌 현재 업비트 지원 마켓 목록 ({len(market_list)}개):")
         #for market in market_list:
@@ -67,3 +67,4 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
     wait_for_listing(args.coin, args.amount)
+

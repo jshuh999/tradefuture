@@ -25,15 +25,15 @@ def get_usdkrw():
 #####################
 #      초기설정      #
 ######################################################
-API_KEY = "API키를 입력하세요"
-SECRET_KEY = "SECRET키를 입력하세요"
-DISCORD_WEBHOOK_URL = "디스코드 웹훅 URL을 입력하세요"
+API_KEY = os.getenv("UPBIT_ACCESS_KEY")
+SECRET_KEY = os.getenv("UPBIT_SECRET_KEY")
+DISCORD_WEBHOOK_URL = "https://discord.com/api/webhooks/1228332705138081934/197Nr0o1MQmbVrq5ndp14mesgsIRgMcnMqIBsAkx9g0-rG_lqcbqLaVL-rS6F_bmutOkhttps://discord.com/api/webhooks/1228332705138081934/197Nr0o1MQmbVrq5ndp14mesgsIRgMcnMqIBsAkx9g0-rG_lqcbqLaVL-rS6F_bmutOk"
 
 김프기준 = 0
 
 보낼금액 = 6000
-보낼코인 = "출금할 코인코드 입력하세요"
-주소 = "출금할 주소를 입력하세요"
+보낼코인 = "USDT"
+주소 = "TH3D9EUoqUrUjWVm1aShwh5jL7FCJ5ZQgH"
 주소2 = ""
 
 #######################################################
@@ -158,3 +158,4 @@ if kimp <= float(김프기준):
         finally:
             with open("last_run.txt", "w") as f:
                 f.write(datetime.now().isoformat())
+
