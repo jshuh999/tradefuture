@@ -18,7 +18,7 @@ binance_api_key = os.getenv("BINANCE_API_KEY")
 binance_api_secret = os.getenv("BINANCE_SECRET_KEY")
 upbit_api_key = os.getenv("UPBIT_ACCESS_KEY")
 upbit_api_secret = os.getenv("UPBIT_SECRET_KEY")
-DISCORD_WEBHOOK_URL = 'https://discord.com/api/webhooks/1227411289937023098/x9hVRLsLUl1n53l5qPvkCuqqufrLlgF1bElWzoeBoAo4fJ4nFknmytE5LojwPEjLkt1P'
+DISCORD_WEBHOOK_URL = os.getenv("DISCORD_WEBHOOK_URL")
 
 # 거래소 객체 생성
 binance = ccxt.binance({'apiKey': binance_api_key, 'secret': binance_api_secret})
