@@ -26,12 +26,18 @@ account_info = {
 
 api = pykis.Api(key_info=key_info, account_info=account_info)
 
-# 모든 종목 데이터 가져오기
-all_stocks = api.get_all_stocks()
+# 종목 코드 리스트 가져오기
+market = 'ALL'  # 'ALL', 'KOSPI', 'KOSDAQ' 중 선택 가능
+stocks_list = api.get_stock_list(market)
 
 # 상장한지 6개월이 지난 종목 필터링
 six_months_ago = datetime.now() - timedelta(days=180)
-stocks_6_months_old = [stock for stock in all_stocks if stock['listing_date'] < six_months_ago]
+stocks_6_months_old = []
+for stock in stocks_list:
+    stock_info = api.get_stock_info(stock['code'])
+    if stock_info['listing_date'] < six_months_ago:
+        stocks_6_months_old.append(stock_info)
+        
 
 # 오늘의 주가가 과거 신고가 또는 250일 신고가에서 -5% 이상 하락한 종목 찾기
 result = []
