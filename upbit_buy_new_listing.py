@@ -43,28 +43,35 @@ def buy_market_order(market, amount_krw):
     except Exception as e:
         print(f"❌ 주문 실패: {e}")
 
+def buy_limit_order(market, price, amount):
+    """지정된 코인을 지정가 매수"""
+    try:
+        order = exchange.create_limit_buy_order(market, amount / price, price)
+        print(f"✅ {market} 지정가 매수 주문 성공! 가격: {price}, 금액: {amount}")
+        print(order)
+    except Exception as e:
+        print(f"❌ 주문 실패: {e}")
+
 def wait_for_listing(target_coin, max_amount):
-    """지정된 코인이 업비트에 상장될 때까지 대기 후 매수"""
+    """지정된 코인이 업비트에 상장될 때까지 대기 후 지정가 매수"""
     print(f"🔍 {target_coin} 상장 여부 확인 중...")
 
     while True:
         markets = get_markets()
-        normalized_markets = [m.lower() for m in markets]  # 소문자로 변환하여 비교
-
-        if target_coin.lower() in normalized_markets:
-            print(f"✅ {target_coin} 상장 확인! 시장가 매수 진행.")
-            buy_market_order(target_coin, max_amount)
+        if target_coin in markets:
+            print(f"✅ {target_coin} 상장 확인! 지정가 매수 진행.")
+            buy_limit_order(target_coin, price, max_amount)
             break
-
         else:
             print(f"⏳ {target_coin} 아직 상장되지 않음. 10초 후 다시 확인...")
         time.sleep(10)
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="업비트 코인 상장 확인 후 자동 매수 프로그램 (CCXT 사용)")
-    parser.add_argument("coin", type=str, help="매수할 코인의 마켓 코드 (예: KRW-NEWCOIN)")
+    parser = argparse.ArgumentParser(description="업비트 코인 상장 확인 후 자동 지정가 매수 프로그램 (CCXT 사용)")
+    parser.add_argument("coin", type=str, help="매수할 코인의 마켓 코드 (예: BTC/KRW)")
+    parser.add_argument("price", type=float, help="지정가 주문 가격 (KRW)")
     parser.add_argument("amount", type=float, help="매수할 금액 (KRW)")
 
     args = parser.parse_args()
-    wait_for_listing(args.coin, args.amount)
+    wait_for_listing(args.coin, args.price, args.amount)
 
