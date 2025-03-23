@@ -51,14 +51,16 @@ def buy_limit_order(market, amount_krw, price):
         amount = amount_krw / price
         order = exchange.create_limit_buy_order(market, amount, price)
         print(f"✅ {market} 지정가 매수 성공! 주문 정보:")
-        print(order)
+        #print(order)
+        print(f"수량: {amount:.4f}")
+        print(f"금액: {amount_krw:.2f} KRW")
     except Exception as e:
         print(f"❌ 주문 실패: {e}")
 
-def wait_for_listing(target_coin, max_amount):
+def wait_for_listing(target_coin, max_amount, currency):
     """지정된 코인이 업비트에 상장될 때까지 대기 후 매수"""
     print(f"🔍 {target_coin} 상장 여부 확인 중...")
-    price = 1000000 # 지정가를 높게 설정(무조건 매수되도록)
+    #currency = 1000000 # 지정가를 높게 설정(무조건 매수되도록)
 
     while True:
         markets = get_markets()
@@ -66,7 +68,7 @@ def wait_for_listing(target_coin, max_amount):
 
         if target_coin.lower() in normalized_markets:
             print(f"✅ {target_coin} 상장 확인! 시장가 매수 진행.")
-            buy_limit_order(target_coin, max_amount, price)
+            buy_limit_order(target_coin, max_amount, currency)
             break
 
         else:
@@ -80,7 +82,8 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="업비트 코인 상장 확인 후 자동 매수 프로그램 (CCXT 사용)")
     parser.add_argument("coin", type=str, help="매수할 코인의 마켓 코드 (예: KRW-NEWCOIN)")
     parser.add_argument("amount", type=float, help="매수할 금액 (KRW)")
+    parser.add_argument("currency", type=float, help="매수할 지정가")
 
     args = parser.parse_args()
-    wait_for_listing(args.coin, args.amount)
+    wait_for_listing(args.coin, args.amount, args.currency)
 
